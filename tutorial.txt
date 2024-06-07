@@ -4,3 +4,30 @@ Tutorial Electron
     npm init
 
 (seguir a documentação)
+
+2) Criar uma estrutura de pastas (modelo de camadas MVC)
+src
+|---- views
+        |--- index.html
+|---- public
+        |--- css
+        |--- img
+        |--- js
+
+3) Personalização da janela
+    - dimensões
+    - redirecionamento
+    - cor
+    - ícone
+    - menu e barra de título
+
+4) Personalização do menu
+template -> estrutura de dados
+Passo 1: importar o recurso Menu e criar template
+Passo 2: exibir o template no lugar do menu original
+
+Obs: alguns recursos precisam ser importados:
+Exemplo: Acesso a links externos
+shell
+
+Obs2: o shell é usado no main para acessar recursos externos
