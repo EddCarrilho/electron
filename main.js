@@ -1,6 +1,7 @@
-// console.log("Processo Principal")
+const { app, BrowserWindow, nativeTheme, Menu, shell, ipcMain} = require('electron')
 
-const { app, BrowserWindow, nativeTheme, Menu, shell} = require('electron')
+// relacionado ao preload.js (path é o caminho)
+const path = require('node:path')
 
 // janela principal
 const createWindow = () => {
@@ -8,10 +9,13 @@ const createWindow = () => {
   const win = new BrowserWindow({
     width: 800, //largura
     height: 600, //altura
-    icon: './src/public/img/pc.png'   
+    icon: './src/public/img/pc.png',
     //resizable: false, //evitar o redimensionamento
     //titleBarStyle: 'hidden' //esconder barra de título e menu
     //autoHideMenuBar: true //esconder o menu
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js')
+    }
   })
 
   // Iniciar a janela com o menu personalizado
@@ -21,16 +25,24 @@ const createWindow = () => {
 }
 
 // janela sobre
-const aboutWindow = () => {
-  const about = new BrowserWindow({
-    width: 360, //largura
-    height: 220, //altura
-    icon: './src/public/img/pc.png',   
-    resizable: false, //evitar o redimensionamento
-    autoHideMenuBar: true //esconder o menu
-})
+let about // Resolver BUG de abertura de várias janelas
 
-about.loadFile('./src/views/sobre.html')
+const aboutWindow = () => {
+      // se a janela about não estiver aberta (BUG 1) abrir
+      if (!about) {
+            about = new BrowserWindow({
+                  width: 360, //largura
+                  height: 220, //altura
+                  icon: './src/public/img/pc.png',   
+                  resizable: false, //evitar o redimensionamento
+                  autoHideMenuBar: true //esconder o menu
+              })
+      }
+      about.loadFile('./src/views/sobre.html')
+      // BUG 2 (reabrir a janela se estiver fechada)
+      about.on('closed', () => {
+            about = null
+      })
 }
 
 // Executar de forma assíncrona a aplicação
@@ -97,3 +109,16 @@ const template = [
       ]
   }
 ]
+
+// Processos
+console.log("Processo Principal")
+//exemplo 1: Comando que só funciona no node.js
+console.log(`Electron: ${process.versions.electron}`)
+//exmeplo 2: Recebimento de uma mensagem do renderer
+ipcMain.on('send-message', (event, message) => {
+      console.log(`Processo principal recebeu uma mensagem: ${message}`)
+})
+//exemplo 3: Recebimento do renderer de uma ação a ser executada
+ipcMain.on('open-about', () => {
+      aboutWindow()
+})
