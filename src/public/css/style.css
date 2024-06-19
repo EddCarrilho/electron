@@ -1,0 +1,13 @@
+/* Rodapé */
+footer {
+    background-color: #007acc;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+}
+
+footer p {
+    color: #fff;
+    font-weight: 600;
+    margin: 12px 0px 10px 12px;
+}
