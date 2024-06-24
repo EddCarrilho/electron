@@ -67,5 +67,11 @@ ipcRenderer.on(()=>{})
  O bootstrap trabalha com conceitos de classes
  Inicie criando um container (div.container)
 
+____________________________________________________________________________
+Relação entre janelas (parent-child) e modal
+- Foco do usuário no sistema
+- Segurança e desempenho
 
+Passo 1: Determinar a janela pai (principal)
+Passo 2: Criar o relacionamento entre as janelas
 
